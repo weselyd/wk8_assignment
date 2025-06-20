@@ -3,6 +3,7 @@ import { displayAiAdvice, showWeather, showError, showSunSpinner, addButtonClick
 import { aiButton } from './modules/events.js';
 import { callOpenAI } from './modules/ai.js';
 import { BackgroundColorSlider } from './modules/backgroundSlider.js';
+import './modules/classifier.js'
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,8 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const cityInput = document.getElementById('city-input');
   const form = document.getElementById('search-form');
-
-  
 
   // Create and style the suggestion box, append to body
   let suggestionBox = document.getElementById('location-suggestions');
