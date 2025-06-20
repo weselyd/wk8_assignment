@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weather Dashboard v2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" async>  <!-- // Added async so it doesn't block rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" async></script>  <!-- // Added async so it doesn't block rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js" async></script>  <!-- // Added async so it doesn't block rendering -->
+</head>
+<body class="bg-gradient-to-br from-blue-700 via-sky-800 to-blue-900 text-gray-100 min-h-screen flex flex-col">
+  <header class="bg-transparent py-8 flex flex-col items-center">
+    <div class="flex items-center gap-3">
+      <!-- Draw sun icon in header -->
+      <svg id="sun-icon" class="w-10 h-10 text-yellow-300 drop-shadow-lg" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5" fill="currentColor"/>
+        <g stroke-linecap="round">
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </g>
+      </svg>
+      <!-- Display title and subheading -->
+      <h1
+        class="text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg text-center"
+        style="font-family: 'Montserrat', sans-serif;">
+        Weather Dashboard v2
+      </h1>
+    </div>
+    <p
+      class="text-blue-100 mt-2 text-center text-lg font-medium"
+      style="font-family: 'Quicksand', sans-serif;">
+      Week 5: Modernize Your Web App with AI &amp; Advanced UI Techniques
+    </p>
+  </header>
+  <!-- Show text box with "Get My Weather" button -->
+  <main class="flex-1 flex flex-col items-center justify-center px-4">
+    <form id="search-form" autocomplete="off" class="flex flex-col md:flex-row gap-4 items-center w-full max-w-md mt-10 bg-white/20 backdrop-blur-md rounded-xl shadow-xl p-6 border border-white/30">
+      <input
+        type="text"
+        id="city-input"
+        placeholder="Enter City"
+        aria-label="Enter City"
+        required
+        class="w-full md:w-auto px-4 py-2 rounded-md border border-blue-300 bg-white/70 text-blue-900 placeholder-blue-400 focus:outline-none focus:ring-2 focus:ring-yellow-300 focus:border-yellow-300 transition font-semibold shadow-sm"
+      />
+      <!--  REMOVED "GET MY WEATHER" BUTTON
+      <button
+        type="submit"
+        class="relative px-6 py-2 rounded-md bg-yellow-200 hover:bg-yellow-300 text-blue-900 font-bold shadow-lg transition overflow-hidden"
+      >
+        <span class="relative z-10">Get My Weather</span>
+        <span class="pointer-events-none absolute left-0 top-0 w-full h-1/2 bg-white/30 rounded-t-md"></span>
+      </button> -->
+    </form>
+    <section id="weather-output" class="w-full max-w-xl mt-8"></section>
+    <!-- Add a tall spacer to push images below the fold for lazy loading demo -->
+    <div class="h-[2500px]"></div>
+    <!-- Weather images row 1 -->
+    <div class="flex flex-row justify-center items-center gap-8 mt-8 mb-4">
+      <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=100&q=80" alt="Cloudy weather" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=100&q=80" alt="Sunny weather" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+    </div>
+    <!-- Weather images row 2 -->
+    <div class="flex flex-row justify-center items-center gap-8 mb-4">
+      <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=100&q=80" alt="Rainy weather" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?auto=format&fit=crop&w=100&q=80" alt="Snowy weather" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+    </div>
+    <!-- Weather images row 3 -->
+    <div class="flex flex-row justify-center items-center gap-8 mb-4">
+      <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=100&q=80" alt="Foggy weather" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=100&q=80" alt="Frosty grass" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+    </div>
+    <!-- Weather images row 4 -->
+    <div class="flex flex-row justify-center items-center gap-8 mb-4">
+      <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=100&q=80" alt="Thunderstorm" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=100&q=80" alt="Rainbow" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+    </div>
+    <!-- Weather images row 5 -->
+    <div class="flex flex-row justify-center items-center gap-8 mb-4">
+      <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=100&q=80" alt="Lightning" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=100&q=80" alt="Sunset" class="w-32 h-32 object-cover rounded-lg shadow-md" loading="lazy" />
+    </div>
+  </main>
+  <!-- Place and center background slider web componenet -->
+  <div class="flex justify-center">
+    <background-color-slider></background-color-slider>
+  </div>
+  <!-- Display footer for fun -->
+  <footer class="text-center mt-8 mb-4 text-blue-100 font-medium drop-shadow">
+    Weather advice powered by OpenAI
+  </footer>
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
