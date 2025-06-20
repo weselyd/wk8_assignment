@@ -1,8 +1,16 @@
-// DOM elements
+// DOM elements for image upload and classification
 const imageInput = document.getElementById('imageInput');
 const imagePreview = document.getElementById('imagePreview');
 const classifyButton = document.getElementById('classifyButton');
 const resultContainer = document.getElementById('resultContainer');
+
+
+// Collapsible logic for Cloud Classifier
+const toggleBtn = document.getElementById('toggleClassifier');
+const content = document.getElementById('cloudClassifierContent');
+const icon = document.getElementById('toggleIcon');
+
+/*
 
 // Verify DOM elements exist
 if (!imageInput || !imagePreview || !classifyButton || !resultContainer) {
@@ -11,11 +19,9 @@ if (!imageInput || !imagePreview || !classifyButton || !resultContainer) {
     });
     resultContainer.innerHTML = '<p>Error: Page elements not loaded correctly.</p>';
 }
+*/
 
-// Collapsible logic for Cloud Classifier
-const toggleBtn = document.getElementById('toggleClassifier');
-const content = document.getElementById('cloudClassifierContent');
-const icon = document.getElementById('toggleIcon');
+
 
 // Handle image upload
 imageInput.addEventListener('change', async (event) => {
@@ -30,9 +36,10 @@ imageInput.addEventListener('change', async (event) => {
     console.log('Selected file:', file.name, file.type);
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
+    // Only allow JPEG and PNG
+    if (!(file.type === 'image/jpeg' || file.type === 'image/png')) {
         console.error('Invalid file type:', file.type);
-        resultContainer.innerHTML = '<p>Please upload a valid image file (e.g., JPEG, PNG).</p>';
+        resultContainer.innerHTML = '<p class="text-red-600">Please upload a JPEG or PNG image.</p>';
         classifyButton.disabled = true;
         return;
     }
@@ -76,12 +83,12 @@ classifyButton.addEventListener('click', async () => {
 
         // Send to backend
         console.log('Sending request to backend');
-        const response = await fetch('http://localhost:3000/classify', {
+        const response = await fetch('https://csc435-wk8assignment.netlify.app/.netlify/functions/classify', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 image: base64Image,
-                labels: ['cumulus', 'stratus', 'cirrus', 'nimbus', 'altocumulus', 'stratocumulus']
+                labels: ['cumulus', 'stratus', 'cirrus', 'cirrocumulus', 'cirrostratus', 'altostratus', 'altocumulus', 'stratocumulus', 'nimbostratus', 'cumulonimbus']
             })
         });
 
