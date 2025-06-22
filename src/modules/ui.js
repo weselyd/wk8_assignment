@@ -1,7 +1,7 @@
 // Show rotating sun as spinner
 export function showSunSpinner(location = 'weather-output') {
-  const weatherOutput = document.getElementById(location);
-  weatherOutput.innerHTML = `
+  const elementId = document.getElementById(location);
+  elementId.innerHTML = `
     <div class="flex justify-center items-center min-h-[48px]">
       <svg class="w-10 h-10 text-yellow-300 drop-shadow-lg animate-spin [animation-duration:3s]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="5" fill="currentColor"/>

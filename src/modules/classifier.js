@@ -1,3 +1,5 @@
+import { showSunSpinner } from "./ui.js";
+
 // DOM elements for image upload and classification
 const imageInput = document.getElementById('imageInput');
 const imagePreview = document.getElementById('imagePreview');
@@ -10,35 +12,15 @@ const toggleBtn = document.getElementById('toggleClassifier');
 const content = document.getElementById('cloudClassifierContent');
 const icon = document.getElementById('toggleIcon');
 
-/*
-
-// Verify DOM elements exist
-if (!imageInput || !imagePreview || !classifyButton || !resultContainer) {
-    console.error('One or more DOM elements not found:', {
-        imageInput, imagePreview, classifyButton, resultContainer
-    });
-    resultContainer.innerHTML = '<p>Error: Page elements not loaded correctly.</p>';
-}
-*/
-
-
-
 // Handle image upload
 imageInput.addEventListener('change', async (event) => {
-    console.log('Image input changed');
     const file = event.target.files[0];
     if (!file) {
-        console.error('No file selected');
         resultContainer.innerHTML = '<p>Please select an image file.</p>';
         return;
     }
 
-    console.log('Selected file:', file.name, file.type);
-
-    // Validate file type
-    // Only allow JPEG and PNG
-    if (!(file.type === 'image/jpeg' || file.type === 'image/png')) {
-        console.error('Invalid file type:', file.type);
+    if (!(file.type === 'image/jpeg' || file.type === 'image/png')) {  // Validate file type - onkly allow JPEG and PNG
         resultContainer.innerHTML = '<p class="text-red-600">Please upload a JPEG or PNG image.</p>';
         classifyButton.disabled = true;
         return;
@@ -47,14 +29,11 @@ imageInput.addEventListener('change', async (event) => {
     // Display image preview
     const reader = new FileReader();
     reader.onload = (e) => {
-        console.log('FileReader loaded image');
         imagePreview.src = e.target.result;
         imagePreview.style.display = 'block';
         classifyButton.disabled = false;
-        console.log('Classify button enabled');
     };
     reader.onerror = (error) => {
-        console.error('FileReader error:', error);
         resultContainer.innerHTML = '<p>Error loading image preview.</p>';
         classifyButton.disabled = true;
     };
@@ -63,26 +42,22 @@ imageInput.addEventListener('change', async (event) => {
 
 // Handle classify button click
 classifyButton.addEventListener('click', async () => {
-    console.log('Classify button clicked');
     const file = imageInput.files[0];
     if (!file) {
-        console.error('No file available for classification');
         resultContainer.innerHTML = '<p>Please upload an image first.</p>';
         return;
     }
 
-    resultContainer.innerHTML = '<p>Classifying...</p>';
+    showSunSpinner('resultContainer');  // Show rotating sun spinner while processing
 
     try {
         // Preprocess image: resize to 224x224
-        console.log('Resizing image');
         const blob = await resizeImage(file);
 
         // Convert blob to base64
         const base64Image = await blobToBase64(blob);
 
         // Send to backend
-        console.log('Sending request to backend');
         const response = await fetch('https://csc435-wk8assignment.netlify.app/.netlify/functions/classify', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -93,26 +68,23 @@ classifyButton.addEventListener('click', async () => {
         });
 
         const result = await response.json();
-        if (response.ok) {
-            console.log('Backend response:', result);
-            // Display the top label or a non-cloud message
-            if (result.labels && result.labels.length > 0) {
-                resultContainer.innerHTML = `<p>That looks like a ${result.labels[0].name} cloud</p>`;
+        if (response.ok) {  // Display the top label or a non-cloud message 
+            
+            if (result.labels && result.labels.length > 0) { 
+                resultContainer.innerHTML = `<p class="text-white mb-4 text-center" style="font-family: 'Quicksand', sans-serif;">That looks like a ${result.labels[0].name} cloud</p>`;
             } else {
-                resultContainer.innerHTML = '<p>That doesn\'t look like a cloud</p>';
+                resultContainer.innerHTML = `<p class="text-white mb-4 text-center" style="font-family: 'Quicksand', sans-serif;">That doesn\'t look like a cloud</p>`;
             }
         } else {
             throw new Error(result.error || 'Classification failed');
         }
     } catch (error) {
-        console.error('Classification error:', error);
-        resultContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+        resultContainer.innerHTML = `<p class="text-white mb-4 text-center" style="font-family: 'Quicksand', sans-serif;">Error: ${error.message}</p>`; // CHANGE TEXT COLOR TO WHITE
     }
 });
 
 // Function to resize image to 224x224
 export async function resizeImage(file) {
-    console.log('Starting image resize');
     const img = new Image();
     img.src = URL.createObjectURL(file);
     await new Promise(resolve => img.onload = resolve);
@@ -127,18 +99,15 @@ export async function resizeImage(file) {
         canvas.toBlob(blob => {
             URL.revokeObjectURL(img.src);
             if (blob) {
-                console.log('Image resized successfully');
                 resolve(blob);
             } else {
-                console.error('Failed to create blob');
                 reject(new Error('Failed to resize image'));
             }
         }, 'image/jpeg');
     });
 }
 
-// Convert blob to base64
-export function blobToBase64(blob) {
+export function blobToBase64(blob) {  // Convert blob to base64
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -149,12 +118,7 @@ export function blobToBase64(blob) {
     });
 }
 
-
-// Collapsible logic for Cloud Classifier with dynamic max-height
-//const toggleBtn = document.getElementById('toggleClassifier');
-//const content = document.getElementById('cloudClassifierContent');
-//const icon = document.getElementById('toggleIcon');
-
+// Helper functions to expand/collapse classifier content
 function expandContent() {
   content.hidden = false;
   content.style.maxHeight = 'none';
