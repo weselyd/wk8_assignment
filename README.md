@@ -14,3 +14,13 @@ Environment variable names:
 * OPENAI_KEY
 * OPENWEATHER_API_KEY
 
+# Post-Mortem Reflection
+This project was challenging for me as it incorporates a lot of what I’ve learned over nearly the last two months.  I feel like I’ve covered a lot of ground during that time and have many new tools with which I have become familiarized but there are some additions and refinements to my latest Weather Dashboard that I could implement with more time to work.
+
+1. Use of open-source model: This was expected to be in scope for this assignment but because I was unable to find a ready-made model that I was confident in that could perform image classification on clouds via API call I chose to stick with OpenAI.  This got a working product but if this were a real production app, using OpenAI could mean a significant cost increase to add the feature – especially if it was publicly available.
+
+2. Authenticated experience: Creating an authenticated experience using something like Firebase would be great as it could automatically populate a “home” location for users and open the door to other customizable functionality.
+
+3. Automatic update of background CSS: The app currently has a self-contained module that lets the user change the background from several different options.  The first change would be to make this persistent by saving a value assigned to it in a cookie.  Another way to extend it would be to analyze the user’s source IP address, use the IP to look up their general location, then user that to find current weather at that location, and change the background to match their current weather outside.  This might not always work for users of VPN or other proxied connections but could be a setting enabled/disabled by the user stored in a cookie – or better yet, when combined with an authenticated experience the setting could follow them around wherever they are logged in.
+
+4. Show weather for other locations: Another setting that would likely require a cookie or user authentication would be the ability to show weather for other locations when the page is viewed.  This would be a list of locations that persist after closing the browser or possibly stored in a database.
