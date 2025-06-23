@@ -79,7 +79,7 @@ classifyButton.addEventListener('click', async () => {
             throw new Error(result.error || 'Classification failed');
         }
     } catch (error) {
-        resultContainer.innerHTML = `<p class="text-white mb-4 text-center" style="font-family: 'Quicksand', sans-serif;">Error: ${error.message}</p>`; // CHANGE TEXT COLOR TO WHITE
+        resultContainer.innerHTML = `<p class="text-white mb-4 text-center" style="font-family: 'Quicksand', sans-serif;">Error: ${error.message}</p>`;
     }
 });
 
